@@ -52,6 +52,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('absensi') }}">
+                        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+                        </div>
+                        <div class="menu-title">Absensi</div>
+                    </a>
+                </li>
+                <li>
                     <a href="javascript:void(0)" class="has-arrow">
                         <div class="parent-icon"><i class="bx bx-group"></i>
                         </div>
@@ -59,6 +66,8 @@
                     </a>
                     <ul class="mm-collapse">
                         <li> <a href="{{ route('users.jabatan') }}"><i class="bx bx-right-arrow-alt"></i>Jabatan</a>
+                        </li>
+                        <li> <a href="{{ route('users.karyawan') }}"><i class="bx bx-right-arrow-alt"></i>Karyawan</a>
                         </li>
                     </ul>
                 </li>

@@ -6,8 +6,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-xl-6">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"><i class="bx bxs-plus-square"></i>Tambah
-                                Akun Karyawan</button>
+                                data-bs-target="#exampleModal"><i class="bx bxs-plus-square"></i>Tambah Jabatan</button>
                         </div>
                     </div>
                 </div>

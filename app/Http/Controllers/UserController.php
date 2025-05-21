@@ -8,8 +8,9 @@ use App\Models\Jabatan;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -42,9 +43,34 @@ class UserController extends Controller
             ->rawColumns(['aksi']) // supaya tombol HTML tidak di-escape
             ->make(true);
     }
+    public function dataKaryawan()
+    {
+        $data = Jabatan::select(['id', 'nama_jabatan', 'honor_harian', 'honor_lembur', 'updated_at']);
+
+        $data = User::with('jabatan')->whereIn('role', ['admin', 'karyawan'])->where('status', 0)->latest();
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('jabatan.nama_jabatan', function ($row) {
+                return $row->jabatan->nama_jabatan ?? '-';
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                <button class="btn btn-sm btn-warning" onclick="editKaryawan(' . $row->id . ')">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="hapusKaryawan(' . $row->id . ')">Hapus</button>
+            ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
     public function jabatan()
     {
         return view('users.jabatan');
+    }
+    public function karyawan()
+    {
+        $jabatans = Jabatan::all();
+        return view('users.karyawan', compact('jabatans'));
     }
     public function storeJabatan(Request $request)
     {
@@ -62,6 +88,38 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Data jabatan berhasil ditambahkan.']);
     }
+    public function storeKaryawan(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
+            'email' => 'required|email|unique:users,email',
+            'no_hp' => 'nullable',
+            'jabatan_id' => 'required|exists:jabatans,id',
+            'role' => 'required|in:admin,karyawan',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->no_hp = $request->no_hp;
+        $user->jabatan_id = $request->jabatan_id;
+        $user->role = $request->role;
+        $user->alamat = $request->alamat;
+        $user->tgl_masuk = $request->tgl_masuk;
+        $user->password = Hash::make('12345678'); // default password
+
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('foto_karyawan', 'public');
+            $user->foto = $path;
+        }
+
+        $user->save();
+
+        return response()->json(['message' => 'Karyawan berhasil ditambahkan.']);
+    }
     public function updateJabatan(Request $request, $id)
     {
         $jabatan = Jabatan::findOrFail($id);
@@ -73,7 +131,44 @@ class UserController extends Controller
 
         return response()->json(['status' => 'success']);
     }
+    public function editKaryawan($id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json($user);
+    }
+    public function updateKaryawan(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
 
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'no_hp' => 'nullable',
+            'jabatan_id' => 'required|exists:jabatans,id',
+            'role' => 'required|in:admin,karyawan',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->no_hp = $request->no_hp;
+        $user->jabatan_id = $request->jabatan_id;
+        $user->role = $request->role;
+        $user->alamat = $request->alamat;
+        $user->tgl_masuk = $request->tgl_masuk;
+
+        if ($request->hasFile('foto')) {
+            if ($user->foto && Storage::disk('public')->exists($user->foto)) {
+                Storage::disk('public')->delete($user->foto);
+            }
+            $path = $request->file('foto')->store('foto_karyawan', 'public');
+            $user->foto = $path;
+        }
+
+        $user->save();
+
+        return response()->json(['message' => 'Data karyawan berhasil diperbarui.']);
+    }
     public function deleteJabatan($id)
     {
         $used = User::where('jabatan_id', $id)->exists();
@@ -91,5 +186,14 @@ class UserController extends Controller
             'status' => 'success',
             'message' => 'Jabatan berhasil dihapus.'
         ]);
+    }
+    public function deleteKaryawan($id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->status = 1;
+        $user->save();
+
+        return response()->json(['message' => 'Karyawan berhasil dinonaktifkan.']);
     }
 }
