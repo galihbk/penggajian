@@ -15,6 +15,12 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::get('/users/data', [UserController::class, 'data'])->name('users.data');
+    Route::get('/users/jabatan', [UserController::class, 'jabatan'])->name('users.jabatan');
+    Route::get('/users/data-jabatan', [UserController::class, 'dataJabatan'])->name('users.data-jabatan');
+    Route::post('/users/store-jabatan', [UserController::class, 'storeJabatan'])->name('users.store-jabatan');
+    Route::post('/users/jabatan/{id}', [UserController::class, 'updateJabatan']);
+
+    Route::delete('/users/jabatan/{id}', [UserController::class, 'deleteJabatan']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

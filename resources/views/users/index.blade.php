@@ -5,8 +5,9 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-xl-6">
-                            <a href="ecommerce-add-new-products.html" class="btn btn-primary mb-3 mb-lg-0"><i
-                                    class="bx bxs-plus-square"></i>Tambah Akun Karyawan</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"><i class="bx bxs-plus-square"></i>Tambah
+                                Akun Karyawan</button>
                         </div>
                     </div>
                 </div>

@@ -22,6 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="{{ url('') }}/assets/css/app.css" rel="stylesheet">
     <link href="{{ url('') }}/assets/css/icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Theme Style CSS -->
     <link rel="stylesheet" href="{{ url('') }}/assets/css/dark-theme.css" />
     <link rel="stylesheet" href="{{ url('') }}/assets/css/semi-dark.css" />
@@ -56,6 +57,10 @@
                         </div>
                         <div class="menu-title">Karyawan</div>
                     </a>
+                    <ul class="mm-collapse">
+                        <li> <a href="{{ route('users.jabatan') }}"><i class="bx bx-right-arrow-alt"></i>Jabatan</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -220,6 +225,7 @@
     <script src="{{ url('') }}/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
     <script src="{{ url('') }}/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="{{ url('') }}/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('scripts')
     <script src="{{ url('') }}/assets/js/app.js"></script>
 </body>
