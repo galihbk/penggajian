@@ -59,6 +59,20 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('potongan') }}">
+                        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+                        </div>
+                        <div class="menu-title">Potongan</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('gaji.index') }}">
+                        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+                        </div>
+                        <div class="menu-title">Rekap Gaji</div>
+                    </a>
+                </li>
+                <li>
                     <a href="javascript:void(0)" class="has-arrow">
                         <div class="parent-icon"><i class="bx bx-group"></i>
                         </div>

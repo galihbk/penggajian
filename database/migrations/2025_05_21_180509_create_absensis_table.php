@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->date('tanggal');
+            $table->boolean('hadir')->default(false);
             $table->boolean('lembur')->default(false);
             $table->text('keterangan')->nullable();
             $table->timestamps();

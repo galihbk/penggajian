@@ -3,17 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
-use App\Models\DetailPengguna;
-use Illuminate\Support\HtmlString;
-use App\Models\Jabatan;
+use App\Models\Potongan;
 use App\Models\RekapGaji;
 use App\Models\User;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class AbsensiController extends Controller
 {
@@ -73,5 +68,29 @@ class AbsensiController extends Controller
         $data = Absensi::with('user')->where('tanggal', $tanggal)->get();
 
         return response()->json($data);
+    }
+    public function store(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $dataAbsen = $request->absen;
+
+        DB::beginTransaction();
+        try {
+            foreach ($dataAbsen as $userId => $absen) {
+                Absensi::updateOrCreate(
+                    ['user_id' => $userId, 'tanggal' => $tanggal],
+                    [
+                        'hadir' => isset($absen['hadir']),
+                        'lembur' => isset($absen['lembur']),
+                        'keterangan' => $absen['keterangan'] ?? null,
+                    ]
+                );
+            }
+            DB::commit();
+            return response()->json(['message' => 'Absensi berhasil disimpan.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Terjadi kesalahan saat menyimpan absensi.'], 500);
+        }
     }
 }

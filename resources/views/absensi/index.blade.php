@@ -1,11 +1,16 @@
 <x-app-layout>
     <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <h5>Absensi Harian</h5>
-            <input type="date" class="form-control w-auto" id="tanggalAbsensi" />
+            <div class="col-lg-7">
+                <h5>Absensi Harian</h5>
+            </div>
+            <div class="col-lg-5">
+                <input type="date" id="tanggal" name="tanggal" class="form-control" value="{{ date('Y-m-d') }}">
+            </div>
         </div>
         <div class="card-body">
             <form id="form-absensi">
+                @csrf
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -33,5 +38,27 @@
     </div>
 
     @push('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#form-absensi').on('submit', function(e) {
+                    e.preventDefault();
+
+                    let formData = $(this).serialize();
+                    let tanggal = $('#tanggal').val();
+
+                    $.ajax({
+                        url: '{{ route('absensi.store') }}',
+                        type: 'POST',
+                        data: formData + '&tanggal=' + tanggal,
+                        success: function(res) {
+                            Swal.fire('Berhasil', res.message, 'success');
+                        },
+                        error: function(err) {
+                            Swal.fire('Gagal', 'Terjadi kesalahan saat menyimpan data', 'error');
+                        }
+                    });
+                });
+            });
+        </script>
     @endpush
 </x-app-layout>
