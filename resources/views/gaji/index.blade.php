@@ -1,7 +1,7 @@
 <x-app-layout>
-    <div class="card">
+    <div class="card mb-2">
         <div class="card-body">
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col-md-3">
                     <select id="bulan" class="form-control">
                         @foreach (range(1, 12) as $b)
@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-md-3">
                     <select id="tahun" class="form-control">
-                        @for ($y = date('Y'); $y >= 2020; $y--)
+                        @for ($y = date('Y'); $y >= 2025; $y--)
                             <option value="{{ $y }}">{{ $y }}</option>
                         @endfor
                     </select>
@@ -21,16 +21,23 @@
                     <button class="btn btn-primary" id="btn-filter">Tampilkan</button>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+
             <table class="table table-bordered" id="gaji-table">
                 <thead>
                     <tr>
                         <th>Nama</th>
                         <th>Jabatan</th>
                         <th>Hadir</th>
+                        <th>Lembur</th>
                         <th>Honor Harian</th>
                         <th>Honor Lembur</th>
                         <th>Potongan</th>
                         <th>Total Gaji</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -57,7 +64,12 @@
                         data: 'jabatan'
                     },
                     {
-                        data: 'hadir'
+                        data: 'hadir',
+                        render: d => d + ' hari'
+                    },
+                    {
+                        data: 'lembur',
+                        render: d => d + ' hari'
                     },
                     {
                         data: 'honor_harian',
@@ -74,7 +86,24 @@
                     {
                         data: 'total',
                         render: d => 'Rp ' + formatRupiah(d)
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return `
+            <a href="/rekap-gaji/print-slip?id_user=${row.id}&bulan=${row.bulan}&tahun=${row.tahun}" 
+               target="_blank" class="btn btn-sm btn-secondary">Cetak</a>
+             <form id="form-kirim-${row.id}" method="POST" action="/send-slip" style="display:inline;">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="id_user" value="${row.id}">
+                <input type="hidden" name="bulan" value="${$('#bulan').val()}">
+                <input type="hidden" name="tahun" value="${$('#tahun').val()}">
+                <button type="submit" class="btn btn-sm btn-success">Kirim Email</button>
+            </form>
+        `;
+                        }
                     }
+
                 ]
             });
 

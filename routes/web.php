@@ -39,6 +39,8 @@ Route::middleware(['auth', CheckRole::class . ':admin,owner'])->group(function (
 
     Route::get('/rekap-gaji', [RekapGajiController::class, 'index'])->name('gaji.index');
     Route::get('/rekap-gaji/data', [RekapGajiController::class, 'getData'])->name('gaji.data');
+    Route::get('/rekap-gaji/print-slip', [RekapGajiController::class, 'printSlip'])->name('gaji.print-slip');
+    Route::post('/send-slip', [RekapGajiController::class, 'sendSlip'])->name('gaji.send');
 
     Route::delete('/users/jabatan/{id}', [UserController::class, 'deleteJabatan']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
