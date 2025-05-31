@@ -18,13 +18,12 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'karyawan', 'owner'])->default('karyawan');
             $table->integer('status')->default(0);
-            $table->unsignedBigInteger('jabatan_id')->nullable()->after('id');
+            $table->unsignedBigInteger('jabatan_id')->nullable();
             $table->date('tgl_masuk')->nullable();
             $table->string('no_hp')->nullable();
             $table->string('email')->nullable();
             $table->string('alamat')->nullable();
             $table->string('foto')->nullable();
-            $table->foreign('jabatan_id')->references('id')->on('jabatans')->onDelete('set null');
             $table->rememberToken();
             $table->timestamps();
         });
