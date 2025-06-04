@@ -46,7 +46,7 @@
                         <div class="col-md-12 mb-2">
                             <label>Karyawan</label>
                             <select name="user_id" class="form-control" required>
-                                <option value="">Pilih Karyawan</option>
+                                <option value="" disabled selected>Pilih Karyawan</option>
                                 @foreach ($karyawan as $l)
                                     <option value="{{ $l->id }}">{{ $l->name }}</option>
                                 @endforeach

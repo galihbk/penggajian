@@ -31,6 +31,7 @@ Route::middleware(['auth', CheckRole::class . ':admin,owner'])->group(function (
     Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi');
     Route::post('/absensi/store', [AbsensiController::class, 'store'])->name('absensi.store');
     Route::get('/absensi/data', [AbsensiController::class, 'data'])->name('absensi.data');
+    Route::post('/absensi/check', [AbsensiController::class, 'check'])->name('absensi.check');
 
 
     Route::get('/potongan', [PotonganController::class, 'index'])->name('potongan');

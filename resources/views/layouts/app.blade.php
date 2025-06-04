@@ -53,23 +53,24 @@
                 </li>
                 <li>
                     <a href="{{ route('absensi') }}">
-                        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+                        <div class="parent-icon"><i class='bx bx-list-check'></i>
                         </div>
                         <div class="menu-title">Absensi</div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('potongan') }}">
-                        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+                        <div class="parent-icon"><i class='bx bx-cut'></i>
                         </div>
                         <div class="menu-title">Potongan</div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('gaji.index') }}">
-                        <div class="parent-icon"><i class='bx bx-home-circle'></i>
+                        <div class="parent-icon"><i class='bx bx-book-bookmark'></i>
                         </div>
                         <div class="menu-title">Rekap Gaji</div>
+
                     </a>
                 </li>
                 <li>

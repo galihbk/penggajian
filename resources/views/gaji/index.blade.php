@@ -1,47 +1,57 @@
 <x-app-layout>
+    @php
+        $currentMonth = date('n'); // 1-12
+        $currentYear = date('Y');
+    @endphp
+
     <div class="card mb-2">
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-3">
+            <div class="d-flex">
+                <div class="col-lg-4 me-2">
                     <select id="bulan" class="form-control">
                         @foreach (range(1, 12) as $b)
-                            <option value="{{ $b }}">{{ DateTime::createFromFormat('!m', $b)->format('F') }}
+                            <option value="{{ $b }}" {{ $b == $currentMonth ? 'selected' : '' }}>
+                                {{ DateTime::createFromFormat('!m', $b)->format('F') }}
                             </option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-4 me-2">
                     <select id="tahun" class="form-control">
-                        @for ($y = date('Y'); $y >= 2025; $y--)
-                            <option value="{{ $y }}">{{ $y }}</option>
+                        @for ($y = $currentYear; $y >= 2025; $y--)
+                            <option value="{{ $y }}" {{ $y == $currentYear ? 'selected' : '' }}>
+                                {{ $y }}
+                            </option>
                         @endfor
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-4">
                     <button class="btn btn-primary" id="btn-filter">Tampilkan</button>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="card">
         <div class="card-body">
-
-            <table class="table table-bordered" id="gaji-table">
-                <thead>
-                    <tr>
-                        <th>Nama</th>
-                        <th>Jabatan</th>
-                        <th>Hadir</th>
-                        <th>Lembur</th>
-                        <th>Honor Harian</th>
-                        <th>Honor Lembur</th>
-                        <th>Potongan</th>
-                        <th>Total Gaji</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="gaji-table">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Hadir</th>
+                            <th>Lembur</th>
+                            <th>Honor Harian</th>
+                            <th>Honor Lembur</th>
+                            <th>Potongan</th>
+                            <th>Total Gaji</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -93,13 +103,6 @@
                             return `
             <a href="/rekap-gaji/print-slip?id_user=${row.id}&bulan=${row.bulan}&tahun=${row.tahun}" 
                target="_blank" class="btn btn-sm btn-secondary">Cetak</a>
-             <form id="form-kirim-${row.id}" method="POST" action="/send-slip" style="display:inline;">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="id_user" value="${row.id}">
-                <input type="hidden" name="bulan" value="${$('#bulan').val()}">
-                <input type="hidden" name="tahun" value="${$('#tahun').val()}">
-                <button type="submit" class="btn btn-sm btn-success">Kirim Email</button>
-            </form>
         `;
                         }
                     }
