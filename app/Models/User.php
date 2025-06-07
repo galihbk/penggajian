@@ -27,6 +27,9 @@ class User extends Authenticatable
         'alamat',
         'tgl_masuk',
         'foto',
+        'nomor_rekening',
+        'nama_bank',
+        'nama_penerima',
     ];
 
     /**

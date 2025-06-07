@@ -97,7 +97,9 @@ class UserController extends Controller
             'no_hp' => 'nullable',
             'jabatan_id' => 'required|exists:jabatans,id',
             'role' => 'required|in:admin,karyawan',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'nomor_rekening' => 'required|max:100',
+            'nama_bank' => 'required|max:50',
+            'nama_penerima' => 'required|max:50',
         ]);
 
         $user = new User();
@@ -107,9 +109,13 @@ class UserController extends Controller
         $user->no_hp = $request->no_hp;
         $user->jabatan_id = $request->jabatan_id;
         $user->role = $request->role;
+        $user->nama_penerima = $request->nama_penerima;
+        $user->nama_bank = $request->nama_bank;
+        $user->nomor_rekening = $request->nomor_rekening;
+        $user->alamat = $request->alamat;
         $user->alamat = $request->alamat;
         $user->tgl_masuk = $request->tgl_masuk;
-        $user->password = Hash::make('12345678'); // default password
+        $user->password = Hash::make('12345678');
 
         if ($request->hasFile('foto')) {
             $path = $request->file('foto')->store('foto_karyawan', 'public');
@@ -195,5 +201,22 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['message' => 'Karyawan berhasil dinonaktifkan.']);
+    }
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required'],
+            'new_password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        if (!Hash::check($request->current_password, auth()->user()->password)) {
+            return back()->with('error', 'Password lama tidak sesuai.');
+        }
+
+        auth()->user()->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return back()->with('success', 'Password berhasil diperbarui.');
     }
 }

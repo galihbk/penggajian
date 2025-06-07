@@ -204,7 +204,7 @@
             <div>{{ $data['kota'] ?? 'Banyumas' }}, {{ now()->format('d M Y') }}</div>
             <div>Mengetahui</div>
             <div>Admin Keuangan</div>
-            <div><strong>{{ $data['admin'] ?? 'Ayu' }}</strong></div>
+            <div><strong>{{ $data['admin']['name'] ?? $data['owner']['name'] }}</strong></div>
         </div>
     </div>
 

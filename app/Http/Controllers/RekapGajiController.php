@@ -7,6 +7,7 @@ use App\Models\Potongan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class RekapGajiController extends Controller
@@ -20,9 +21,7 @@ class RekapGajiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-
         $karyawan = User::with('jabatan')->where('role', '!=', 'owner')->where('status', 0)->get();
-
         $data = $karyawan->map(function ($k) use ($bulan, $tahun) {
             $hadir = Absensi::where('user_id', $k->id)
                 ->whereMonth('tanggal', $bulan)
@@ -97,7 +96,8 @@ class RekapGajiController extends Controller
         $gajiHarian = $hadir * $honorHarian;
         $gajiLemburan = $lembur * $honorLembur;
         $total = $gajiHarian + $gajiLemburan - $potongan;
-
+        $admin = User::where('role', 'admin')->first();
+        $owner = User::where('role', 'owner')->first();
         $data = [
             'nama' => $karyawan->name,
             'id' => $karyawan->id,
@@ -113,6 +113,8 @@ class RekapGajiController extends Controller
             'total' => $total,
             'bulan' => $namaBulan,
             'tahun' => $tahun,
+            'admin' => $admin,
+            'owner' => $owner
         ];
 
         return view('gaji.slip', compact('data'));
