@@ -117,11 +117,6 @@ class UserController extends Controller
         $user->tgl_masuk = $request->tgl_masuk;
         $user->password = Hash::make('12345678');
 
-        if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('foto_karyawan', 'public');
-            $user->foto = $path;
-        }
-
         $user->save();
 
         return response()->json(['message' => 'Karyawan berhasil ditambahkan.']);
