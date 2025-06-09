@@ -83,13 +83,14 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-2">
-                            <label>Nama Rekening</label>
-                            <input type="text" class="form-control" name="nama_rekening">
-                        </div>
-                        <div class="col-md-6 mb-2">
                             <label>Nama Bank</label>
                             <input type="text" class="form-control" name="nama_bank">
                         </div>
+                        <div class="col-md-6 mb-2">
+                            <label>Nomor Rekening</label>
+                            <input type="text" class="form-control" name="nomor_rekening">
+                        </div>
+                        
                         <div class="col-md-6 mb-2">
                             <label>Nama Penerima</label>
                             <input type="text" class="form-control" name="nama_penerima">
