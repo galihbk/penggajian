@@ -85,6 +85,11 @@
 </head>
 
 <body>
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+    </script>
 
     <div class="header">
         <img src="{{ url('') }}/assets/images/logo-icon.png" width="80" alt="">

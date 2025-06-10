@@ -101,7 +101,10 @@ class UserController extends Controller
             'nama_bank' => 'required|max:50',
             'nama_penerima' => 'required|max:50',
         ]);
-
+        $lemburan = 0;
+        if (!empty($request->lemburan)) {
+            $lemburan = 1;
+        }
         $user = new User();
         $user->name = $request->name;
         $user->username = $request->username;
@@ -115,6 +118,7 @@ class UserController extends Controller
         $user->alamat = $request->alamat;
         $user->alamat = $request->alamat;
         $user->tgl_masuk = $request->tgl_masuk;
+        $user->lemburan = $lemburan;
         $user->password = Hash::make('12345678');
 
         $user->save();
@@ -148,8 +152,14 @@ class UserController extends Controller
             'jabatan_id' => 'required|exists:jabatans,id',
             'role' => 'required|in:admin,karyawan',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'nomor_rekening' => 'required|max:100',
+            'nama_bank' => 'required|max:50',
+            'nama_penerima' => 'required|max:50',
         ]);
-
+        $lemburan = 0;
+        if (!empty($request->lemburan)) {
+            $lemburan = 1;
+        }
         $user->name = $request->name;
         $user->email = $request->email;
         $user->no_hp = $request->no_hp;
@@ -157,6 +167,10 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->alamat = $request->alamat;
         $user->tgl_masuk = $request->tgl_masuk;
+        $user->nama_penerima = $request->nama_penerima;
+        $user->nama_bank = $request->nama_bank;
+        $user->nomor_rekening = $request->nomor_rekening;
+        $user->lemburan = $lemburan;
 
         if ($request->hasFile('foto')) {
             if ($user->foto && Storage::disk('public')->exists($user->foto)) {

@@ -90,14 +90,24 @@
                             <label>Nomor Rekening</label>
                             <input type="text" class="form-control" name="nomor_rekening">
                         </div>
-                        
+
                         <div class="col-md-6 mb-2">
                             <label>Nama Penerima</label>
                             <input type="text" class="form-control" name="nama_penerima">
                         </div>
-                        <div class="col-md-12 mb-2">
+
+
+                        <div class="col-md-12">
                             <label>Alamat</label>
                             <textarea name="alamat" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label d-block">&nbsp;</label>
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="dapatLemburanSwitch">Dapat Lemburan?</label>
+                                <input class="form-check-input" type="checkbox" id="dapatLemburanSwitch" name="lemburan"
+                                    value="1">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -121,6 +131,15 @@
                     $('[name=jabatan_id]').val(data.jabatan_id);
                     $('[name=role]').val(data.role);
                     $('[name=alamat]').val(data.alamat);
+                    $('[name=nomor_rekening]').val(data.nomor_rekening);
+                    $('[name=nama_penerima]').val(data.nama_bank);
+                    $('[name=nama_bank]').val(data.nama_penerima);
+
+                    if (data.lemburan === 1) {
+                        $('#dapatLemburanSwitch').prop('checked', true);
+                    } else {
+                        $('#dapatLemburanSwitch').prop('checked', false);
+                    }
                     $('#exampleModal').modal('show');
                 });
             }
@@ -213,8 +232,19 @@
                             Swal.fire('Berhasil!', res.message, 'success');
                             this.reset();
                         },
-                        error: err => {
-                            Swal.fire('Gagal!', 'Terjadi kesalahan.', 'error');
+                        error: function(xhr) {
+                            let errorMessage =
+                                'Terjadi kesalahan saat memproses permintaan.';
+
+                            if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                                const errors = xhr.responseJSON.errors;
+                                errorMessage = Object.values(errors)[0][0] ||
+                                    'Input tidak valid. Periksa kembali data Anda.';
+                            } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+
+                            Swal.fire('Gagal!', errorMessage, 'error');
                         }
                     });
                 });

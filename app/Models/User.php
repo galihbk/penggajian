@@ -30,6 +30,7 @@ class User extends Authenticatable
         'nomor_rekening',
         'nama_bank',
         'nama_penerima',
+        'lemburan'
     ];
 
     /**

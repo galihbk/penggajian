@@ -27,7 +27,10 @@
                                 <tr>
                                     <td>{{ $k->name }}</td>
                                     <td><input type="checkbox" name="absen[{{ $k->id }}][hadir]" /></td>
-                                    <td><input type="checkbox" name="absen[{{ $k->id }}][lembur]" /></td>
+                                    <td>
+                                        <input type="checkbox" name="absen[{{ $k->id }}][lembur]"
+                                            {{ $k->lemburan == 0 ? 'disabled' : '' }}>
+                                    </td>
                                     <td><input type="text" name="absen[{{ $k->id }}][keterangan]"
                                             class="form-control" /></td>
                                 </tr>
@@ -43,10 +46,9 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                // Fungsi untuk load data absensi dan isi form
                 function loadAbsensi(tanggal) {
                     $.ajax({
-                        url: '{{ route('absensi.data') }}', // pastikan route sudah dibuat
+                        url: '{{ route('absensi.data') }}',
                         type: 'GET',
                         data: {
                             tanggal: tanggal
@@ -72,17 +74,14 @@
                     });
                 }
 
-                // Load data absensi untuk tanggal default saat halaman dibuka
                 let tanggalAwal = $('#tanggal').val();
                 loadAbsensi(tanggalAwal);
 
-                // Ketika tanggal berubah, load data absensi untuk tanggal baru
                 $('#tanggal').on('change', function() {
                     let tanggal = $(this).val();
                     loadAbsensi(tanggal);
                 });
 
-                // Submit form tetap seperti biasa
                 $('#form-absensi').on('submit', function(e) {
                     e.preventDefault();
                     let formData = $(this).serialize() + '&tanggal=' + $('#tanggal').val();
