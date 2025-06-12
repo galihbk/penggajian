@@ -40,6 +40,9 @@
                         <tr>
                             <th>Nama</th>
                             <th>Jabatan</th>
+                            <th>Nama Bank</th>
+                            <th>Nomor Rekening</th>
+                            <th>Nama Penerima</th>
                             <th>Hadir</th>
                             <th>Lembur</th>
                             <th>Honor Harian</th>
@@ -98,6 +101,18 @@
                     },
                     {
                         data: 'jabatan'
+                    },
+                    {
+                        data: 'nama_bank',
+                        name: 'nama_bank'
+                    },
+                    {
+                        data: 'nomor_rekening',
+                        name: 'nomor_rekening'
+                    },
+                    {
+                        data: 'nama_penerima',
+                        name: 'nama_penerima'
                     },
                     {
                         data: 'hadir',

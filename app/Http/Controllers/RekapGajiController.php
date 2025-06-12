@@ -47,6 +47,9 @@ class RekapGajiController extends Controller
 
             return [
                 'nama' => $k->name,
+                'nama_bank' => $k->nama_bank,
+                'nama_penerima' => $k->nama_penerima,
+                'nomor_rekening' => $k->nomor_rekening,
                 'jabatan' => $k->jabatan->nama_jabatan ?? '-',
                 'hadir' => $hadir,
                 'lembur' => $lembur,

@@ -23,6 +23,9 @@
                             <th>#</th>
                             <th>Nama Pengguna</th>
                             <th>Jabatan</th>
+                            <th>Nama Bank</th>
+                            <th>Nomor Rekening</th>
+                            <th>Nama Penerima</th>
                             <th>No. HP</th>
                             <th>Email</th>
                             <th>Role</th>
@@ -188,6 +191,18 @@
                         {
                             data: 'jabatan.nama_jabatan',
                             name: 'jabatan.nama_jabatan'
+                        },
+                        {
+                            data: 'nama_bank',
+                            name: 'nama_bank'
+                        },
+                        {
+                            data: 'nomor_rekening',
+                            name: 'nomor_rekening'
+                        },
+                        {
+                            data: 'nama_penerima',
+                            name: 'nama_penerima'
                         },
                         {
                             data: 'no_hp',
